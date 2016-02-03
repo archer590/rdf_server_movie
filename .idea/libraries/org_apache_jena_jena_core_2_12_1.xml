@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="org.apache.jena:jena-core:2.12.1" type="repository">
+    <properties maven-id="org.apache.jena:jena-core:2.12.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jena-core-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jena-iri-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xercesImpl-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xml-apis-1.4.01.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jena-core-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jena-iri-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xercesImpl-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xml-apis-1.4.01.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
