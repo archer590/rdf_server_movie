@@ -29,10 +29,10 @@ public class GraphQueryExecutor {
             "  ?x vcard:FN ?actor .\n" +
             "  ?director movie:directedBy ?film .\n" +
             "  ?director vcard:FN ?name .\n" +
-            "}";
+            "} LIMIT 200";
 
     public void runGraphQuery(){
-        HashMap<String, Integer> st = new HashMap<>();
+        HashMap<String, Integer> st = new HashMap<String, Integer>();
         ArrayList<NodeAD> nodeADs = new ArrayList<NodeAD>();
         ArrayList<LinkAD> linkADs = new ArrayList<LinkAD>();
         String query = PREFIX + GRAPH_QUERY;
@@ -53,39 +53,42 @@ public class GraphQueryExecutor {
             while (results.hasNext()) {
                 System.out.println("while");
                 QuerySolution soln = results.nextSolution();
-                System.out.println(results.nextSolution());
-                //RDFNode title = soln.get("title");
-                RDFNode actor = soln.get("actor");
-                RDFNode director = soln.get("name");
-                RDFNode film = soln.get("title");
-                if(!st.containsKey(actor.toString()))
-                    st.put(actor.toString(),c);
+                if(soln!=null) {
+                    System.out.println(results.nextSolution());
+                    //RDFNode title = soln.get("title");
+                    RDFNode actor = soln.get("actor");
+                    RDFNode director = soln.get("name");
+                    RDFNode film = soln.get("title");
+                    if (!st.containsKey(actor.toString().replaceAll("[\\W\\s]", "")))
+                        st.put(actor.toString().replaceAll("[\\W\\s]", ""), c);
 
-                NodeAD currActor = new NodeAD(actor.toString(), 1);
-                c=c+1;
-                if(!st.containsKey(director.toString()))
-                    st.put(director.toString(),c);
-                NodeAD currDirector = new NodeAD(director.toString(), 2);
-                LinkAD currLink = new LinkAD(st.get(director.toString()),st.get(actor.toString()));
-                if(!st.containsKey(actor.toString())) {
-                    nodeADs.add(currActor);
-                }
-                if(!st.containsKey(director.toString())) {
-                    nodeADs.add(currDirector);
-                }
-                if(!linkADs.contains(currLink)) {
-                    linkADs.add(currLink);
-                } else {
-                    int i = linkADs.indexOf(currLink);
-                    int oldValue = linkADs.get(i).value;
-                    linkADs.get(i).value = oldValue + 1;
-                }
+                    NodeAD currActor = new NodeAD(actor.toString().replaceAll("[\\W\\s]", ""), 1);
+                    c = c + 1;
+                    if (!st.containsKey(director.toString().replaceAll("[\\W\\s]", "")))
+                        st.put(director.toString().replaceAll("[\\W\\s]", ""), c);
+                    NodeAD currDirector = new NodeAD(director.toString().replaceAll("[\\W\\s]", ""), 2);
+                    LinkAD currLink = new LinkAD(st.get(director.toString().replaceAll("[\\W\\s]","")), st.get(actor.toString().replaceAll("[\\W\\s]","")));
+                    if (!nodeADs.contains(currActor)) {
+                        nodeADs.add(currActor);
+                    }
+                    if (!nodeADs.contains(currDirector)) {
+                        nodeADs.add(currDirector);
+                    }
+                    if (!linkADs.contains(currLink)) {
+                        linkADs.add(currLink);
+                    }
+                    if (linkADs.contains(currLink)) {
+                        int i = linkADs.indexOf(currLink);
+                        int oldValue = linkADs.get(i).value;
+                        linkADs.get(i).value = oldValue + 1;
+                    }
 
 
-                //System.out.println(actor.toString()+director.toString());
-                //writer.write("{\"name\":\""+actor+"\",\"group\":1},");
-                //writer.write("{\"name\":\""+director+"\",\"group\":2},");
-                c=c+1;
+                    //System.out.println(actor.toString()+director.toString());
+                    //writer.write("{\"name\":\""+actor+"\",\"group\":1},");
+                    //writer.write("{\"name\":\""+director+"\",\"group\":2},");
+                    c = c + 1;
+                }
             }
 
             /**writer.write("],\n" +
@@ -107,9 +110,10 @@ public class GraphQueryExecutor {
             writer.close();**/
             writeJSONFile(nodeADs, linkADs);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Exception");
+            e.printStackTrace();
         }
-        System.out.println("json file written");
+
     }
 
     public void writeJSONFile(ArrayList<NodeAD> n, ArrayList<LinkAD> l) {
@@ -142,6 +146,7 @@ public class GraphQueryExecutor {
             writer.write("]\n" +
                     "}");
             writer.close();
+            fw.close();
             System.out.println("Json file completed");
         } catch(Exception e) {
             System.out.println(e.getMessage());
